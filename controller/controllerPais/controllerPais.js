@@ -18,14 +18,18 @@ const inserirPais = async function (pais, contentType) {
             if (!pais.nome || pais.nome.trim() === '' || pais.nome.length > 45) {
                 return message.ERROR_REQUIRED_FIELDS
             } else {
-                const result = await paisDAO.insertPais(pais)
-                return result ? message.SUCCESS_CREATED_ITEM : message.ERROR_INTERNAL_SERVER_MODEL
+                let result = await paisDAO.insertPais(pais)
+                
+                console.log(result)
+                if (result)
+                    return message.SUCESS_CREATED_ITEM
+                 else
+                     return message.ERROR_INTERNAL_SERVER_MODEL
             }
         } else {
             return message.ERROR_CONTENT_TYPE
         }
     } catch (error) {
-        console.error(error)
         return message.ERROR_INTERNAL_SERVER_CONTROLLER
     }
 }
@@ -34,17 +38,26 @@ const inserirPais = async function (pais, contentType) {
 const atualizarPais = async function (id, pais, contentType) {
     try {
         if (String(contentType).toLowerCase() === 'application/json') {
-            if (!id || isNaN(id) || id <= 0 || !pais.nome || pais.nome.trim() === '' || pais.nome.length > 45) {
+            if (
+                !id || isNaN(id) || id <= 0 
+                || !pais.nome || pais.nome.trim() === '' 
+                || pais.nome.length > 45
+            ) {
                 return message.ERROR_REQUIRED_FIELDS
             } else {
-                const registro = await paisDAO.selectByIdPais(parseInt(id))
-                if (registro && registro.length > 0) {
+                let paisExistente = await paisDAO.selectByIdPais(parseInt(id))
+
+                if (paisExistente && paisExistente.length > 0) {
                     pais.id = parseInt(id)
-                    const result = await paisDAO.updatePais(pais)
-                    return result ? message.SUCCESS_UPDATED_ITEM : message.ERROR_INTERNAL_SERVER_MODEL
-                } else {
+                    let result = await paisDAO.updatePais(pais)
+                    
+                if (result)
+                    return message.SUCESS_UPDATED_ITEM
+                else
+                    return message.ERROR_INTERNAL_SERVER_MODEL
+            } else {
                     return message.ERROR_NOT_FOUND
-                }
+            }
             }
         } else {
             return message.ERROR_CONTENT_TYPE
@@ -54,7 +67,8 @@ const atualizarPais = async function (id, pais, contentType) {
         return message.ERROR_INTERNAL_SERVER_CONTROLLER
     }
 }
-
+/**************************************************************** */
+/**MUDARRR */
 // Excluir país
 const excluirPais = async function (id) {
     try {

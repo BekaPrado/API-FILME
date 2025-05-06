@@ -221,7 +221,6 @@ app.delete('/v1/controle-filmes/idioma/:id', cors(), async (request, response) =
 /*******************************************************NACIONALIDADE**************************************************************/
 /**********************************************************************************************************************************/
 
-// Importação do controller já está feita no topo do app.js
 
 // inserir nacionalidade
 app.post('/v1/controle-filmes/nacionalidade', cors(), bodyParserJSON, async (request, response) => {

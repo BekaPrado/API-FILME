@@ -145,7 +145,7 @@ const buscarNacionalidadePorNome = async function (nome) {
             return message.ERROR_REQUIRED_FIELDS
         }
 
-        const result = await nacionalidadeDAO.selectByNomeNacionalidade(nome)
+        const result = await nacionalidadeDAO.selectByIdNacionalidade(nome)
 
         if (result && result.length > 0) {
             return {
